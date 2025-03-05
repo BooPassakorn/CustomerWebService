@@ -40,4 +40,23 @@ public class CustomerRepository {
 
         return customers;
     }
+
+    @Transactional(Transactional.TxType.REQUIRED)
+    public int insertCustomer(Customer customer) {
+
+        String sql = " INSERT INTO CUSTOMER " +
+                " VALUES(:id, :name, :surname, :address, :age, :tel) ";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", customer.getId());
+        query.setParameter("name", customer.getName());
+        query.setParameter("surname", customer.getSurname());
+        query.setParameter("address", customer.getAddress());
+        query.setParameter("age", customer.getAge());
+        query.setParameter("tel", customer.getTel());
+
+        return query.executeUpdate();
+
+    }
 }

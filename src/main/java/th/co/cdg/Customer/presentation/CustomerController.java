@@ -1,10 +1,9 @@
 package th.co.cdg.Customer.presentation;
 
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import th.co.cdg.Customer.model.Customer;
 import th.co.cdg.Customer.repository.CustomerRepository;
 
@@ -26,7 +25,31 @@ public class CustomerController {
     }
 
     // ---- Service สำหรับข้อมูลตาม Id ---- //
+
     // ---- Service สำหรับเพิ่มข้อมูล Customer ---- //
+    @PostMapping(value = "add-customer")
+    public ResponseEntity<String> addCustomerController(@RequestBody Customer customer) {
+        try {
+            int result = customerRepository.insertCustomer(customer);
+
+            if (result != 0) {
+                return ResponseEntity
+                        .ok()
+                        .body("Add new customer successfully");
+            } else {
+                return ResponseEntity
+                        .badRequest()
+                        .body("Can't add new customer");
+            }
+        } catch (Exception e) {
+            return ResponseEntity
+                    .internalServerError()
+                    .body("Can't add new customer cause SQL problem.");
+        }
+    }
+
     // ---- Service สำหรับอัพเดตข้อมูล Customer ---- //
+
     // ---- Service สำหรับลบข้อมูล Customer ตาม Id ---- //
+
 }
