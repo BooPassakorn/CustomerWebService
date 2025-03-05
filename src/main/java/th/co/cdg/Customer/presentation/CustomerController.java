@@ -27,9 +27,9 @@ public class CustomerController {
     @GetMapping(value = "get-customer/{id}")
     public ResponseEntity<ArrayList<Customer>> getAllCustomerByIdController(@PathVariable(name = "id") Long id) {
 
-        int Customer = customerRepository.queryCustomerById(id).size();
+        int result = customerRepository.queryCustomerById(id).size();
 
-        if (Customer != 0) {
+        if (result != 0) {
             return ResponseEntity
                     .ok()
                     .body(customerRepository.queryCustomerById(id));
