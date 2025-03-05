@@ -42,6 +42,36 @@ public class CustomerRepository {
         return customers;
     }
 
+    // ---- Service สำหรับข้อมูลตาม Id ---- //
+    @Transactional(Transactional.TxType.SUPPORTS)
+    public ArrayList<Customer> queryCustomerById(Long id) {
+
+        String sql = " SELECT * FROM CUSTOMER " +
+                "WHERE ID = :id ";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+
+        ArrayList<Object[]> resultList = (ArrayList<Object[]>) query.getResultList();
+
+        ArrayList<Customer> customers = new ArrayList<>();
+
+        resultList.forEach(result -> {
+            Customer customer = new Customer();
+            customer.setId(((Integer) result[0]).longValue());
+            customer.setName((String) result[1]);
+            customer.setSurname((String) result[2]);
+            customer.setAddress(result[3].toString());
+            customer.setAge(((Integer) result[4]).longValue());
+            customer.setTel((String) result[5]);
+            customers.add(customer);
+        });
+
+        return customers;
+    }
+
+
     // ---- Service สำหรับอัพเดตข้อมูล Customer ---- //
     @Transactional(Transactional.TxType.REQUIRED)
     public int updateCustomerById(Customer customer) {

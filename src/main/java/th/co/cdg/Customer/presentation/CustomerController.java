@@ -1,6 +1,5 @@
 package th.co.cdg.Customer.presentation;
 
-import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +24,21 @@ public class CustomerController {
     }
 
     // ---- Service สำหรับข้อมูลตาม Id ---- //
+    @GetMapping(value = "get-customer/{id}")
+    public ResponseEntity<ArrayList<Customer>> getAllCustomerByIdController(@PathVariable(name = "id") Long id) {
+
+        int Customer = customerRepository.queryCustomerById(id).size();
+
+        if (Customer != 0) {
+            return ResponseEntity
+                    .ok()
+                    .body(customerRepository.queryCustomerById(id));
+        } else {
+            return ResponseEntity
+                    .noContent()
+                    .build();
+        }
+    }
 
     // ---- Service สำหรับเพิ่มข้อมูล Customer ---- //
     @PostMapping(value = "add-customer")
