@@ -51,5 +51,19 @@ public class CustomerController {
     // ---- Service สำหรับอัพเดตข้อมูล Customer ---- //
 
     // ---- Service สำหรับลบข้อมูล Customer ตาม Id ---- //
+    @DeleteMapping(value = "delete-customer/{id}")
+    public ResponseEntity<String> deleteCustomerController(@PathVariable(name = "id") Long id) {
+        int result = customerRepository.deleteCustomerById(id);
+
+        if (result != 0) {
+            return ResponseEntity
+                    .ok()
+                    .body("Delete customer successfully");
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Can't delete customer");
+        }
+    }
 
 }

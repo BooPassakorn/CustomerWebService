@@ -15,6 +15,7 @@ public class CustomerRepository {
     @PersistenceContext
     private EntityManager entityManager;
 
+    // ---- Service สำหรับข้อมูล Customer ทั้งหมด ---- //
     @Transactional(Transactional.TxType.SUPPORTS)
     public ArrayList<Customer> queryAllCustomer() {
 
@@ -41,6 +42,7 @@ public class CustomerRepository {
         return customers;
     }
 
+    // ---- Service สำหรับเพิ่มข้อมูล Customer ---- //
     @Transactional(Transactional.TxType.REQUIRED)
     public int insertCustomer(Customer customer) {
 
@@ -58,5 +60,19 @@ public class CustomerRepository {
 
         return query.executeUpdate();
 
+    }
+
+    // ---- Service สำหรับลบข้อมูล Customer ตาม Id ---- //
+    @Transactional(Transactional.TxType.REQUIRED)
+    public int deleteCustomerById(Long id) {
+
+        String sql = "DELETE FROM CUSTOMER " +
+                " WHERE ID = :id ";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", id);
+
+        return query.executeUpdate();
     }
 }
