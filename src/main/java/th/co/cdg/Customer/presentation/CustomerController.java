@@ -49,6 +49,20 @@ public class CustomerController {
     }
 
     // ---- Service สำหรับอัพเดตข้อมูล Customer ---- //
+    @PutMapping(value = "update-customer")
+    public ResponseEntity<String> updateCustomerByIdController(@RequestBody Customer customer) {
+        int result = customerRepository.updateCustomerById(customer);
+
+        if (result != 0) {
+            return ResponseEntity
+                    .ok()
+                    .body("Update customer successfully");
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body("Cannot update customer");
+        }
+    }
 
     // ---- Service สำหรับลบข้อมูล Customer ตาม Id ---- //
     @DeleteMapping(value = "delete-customer/{id}")

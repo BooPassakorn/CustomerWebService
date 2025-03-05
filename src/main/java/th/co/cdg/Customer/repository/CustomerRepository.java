@@ -42,6 +42,73 @@ public class CustomerRepository {
         return customers;
     }
 
+    // ---- Service สำหรับอัพเดตข้อมูล Customer ---- //
+    @Transactional(Transactional.TxType.REQUIRED)
+    public int updateCustomerById(Customer customer) {
+
+        String sql = " UPDATE CUSTOMER SET ";
+
+        if (null != customer.getName()) {
+            sql += " NAME = :name ";
+            if (null != customer.getSurname() || null != customer.getAddress() || null != customer.getAge() || null != customer.getTel()) {
+                sql += " , ";
+            }
+        }
+
+        if (null != customer.getSurname()) {
+            sql += " SURNAME = :surname ";
+            if (null != customer.getAddress() || null != customer.getAge() || null != customer.getTel()) {
+                sql += " , ";
+            }
+        }
+
+        if (null != customer.getAddress()) {
+            sql += " ADDRESS = :address ";
+            if (null != customer.getAge() || null != customer.getTel()) {
+                sql += " , ";
+            }
+        }
+
+        if (null != customer.getAge()) {
+            sql += " AGE = :age ";
+            if (null != customer.getTel()) {
+                sql += " , ";
+            }
+        }
+
+        if (null != customer.getTel()) {
+            sql += " TEL = :tel ";
+        }
+
+        sql += " WHERE ID = :id ";
+
+        Query query = entityManager.createNativeQuery(sql);
+
+        query.setParameter("id", customer.getId());
+
+        if (null != customer.getName()) {
+            query.setParameter("name", customer.getName());
+        }
+
+        if (null != customer.getSurname()) {
+            query.setParameter("surname", customer.getSurname());
+        }
+
+        if (null != customer.getAddress()) {
+            query.setParameter("address", customer.getAddress());
+        }
+
+        if (null != customer.getAge()) {
+            query.setParameter("age", customer.getAge());
+        }
+
+        if (null != customer.getTel()) {
+            query.setParameter("tel", customer.getTel());
+        }
+
+        return query.executeUpdate();
+    }
+
     // ---- Service สำหรับเพิ่มข้อมูล Customer ---- //
     @Transactional(Transactional.TxType.REQUIRED)
     public int insertCustomer(Customer customer) {
